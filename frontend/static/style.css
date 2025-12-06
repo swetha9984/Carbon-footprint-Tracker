@@ -1,0 +1,174 @@
+:root {
+    --eco-green: #2d6a4f;
+    --eco-light-green: #52b788;
+    --eco-beige: #f5f3ed;
+    --eco-white: #ffffff;
+    --eco-dark: #1b4332;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--eco-beige);
+    color: #333;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.login-page {
+    background: linear-gradient(135deg, #2d6a4f 0%, #52b788 100%);
+}
+
+.login-page .card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+}
+
+.stat-icon {
+    font-size: 3rem;
+}
+
+.card {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.btn-success {
+    background-color: var(--eco-green);
+    border-color: var(--eco-green);
+    font-weight: 500;
+}
+
+.btn-success:hover {
+    background-color: var(--eco-dark);
+    border-color: var(--eco-dark);
+}
+
+.bg-success {
+    background-color: var(--eco-green) !important;
+}
+
+.text-success {
+    color: var(--eco-green) !important;
+}
+
+.badge-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+}
+
+.badge-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+}
+
+.badge-card.earned {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+    border: 2px solid var(--eco-light-green);
+}
+
+.badge-card.locked {
+    background-color: #f8f9fa;
+    opacity: 0.7;
+}
+
+.badge-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.earned-icon {
+    filter: none;
+}
+
+.locked-icon {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.sdg-card {
+    transition: transform 0.3s ease;
+}
+
+.sdg-card:hover {
+    transform: translateY(-3px);
+}
+
+.sdg-number {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--eco-green);
+    transition: width 0.6s ease;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--eco-light-green);
+    box-shadow: 0 0 0 0.2rem rgba(82, 183, 136, 0.25);
+}
+
+@media (max-width: 768px) {
+    .stat-icon {
+        font-size: 2rem;
+    }
+    
+    .badge-icon {
+        font-size: 3rem;
+    }
+    
+    .sdg-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
+
+.container {
+    padding-bottom: 40px;
+}
+
+canvas {
+    max-height: 400px;
+}
