@@ -1,0 +1,131 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const chartCanvas = document.getElementById('emissionsChart');
+    
+    if (chartCanvas) {
+        fetch('/api/emissions-data')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    chartCanvas.style.display = 'none';
+                    document.getElementById('noDataMessage').style.display = 'block';
+                    return;
+                }
+                
+                const chartData = data.map(entry => ({
+                    x: entry.day,
+                    y: entry.emission,
+                    label: entry.description,
+                    category: entry.category,
+                    date: entry.date
+                }));
+                
+                const vehicleData = chartData.filter(d => d.category === 'vehicle');
+                const foodData = chartData.filter(d => d.category === 'food');
+                
+                const ctx = chartCanvas.getContext('2d');
+                const emissionsChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: '🚗 Vehicle Emissions',
+                                data: vehicleData,
+                                backgroundColor: 'rgba(220, 38, 38, 0.6)',
+                                borderColor: 'rgba(220, 38, 38, 1)',
+                                borderWidth: 2,
+                                pointRadius: 8,
+                                pointHoverRadius: 10
+                            },
+                            {
+                                label: '🍽️ Food Emissions',
+                                data: foodData,
+                                backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                                borderColor: 'rgba(34, 197, 94, 1)',
+                                borderWidth: 2,
+                                pointRadius: 8,
+                                pointHoverRadius: 10
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'Day Number',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function(value) {
+                                        return 'Day ' + value;
+                                    }
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'CO₂ Emissions (kg)',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                },
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                padding: 12,
+                                callbacks: {
+                                    title: function(context) {
+                                        return 'Day ' + context[0].parsed.x;
+                                    },
+                                    label: function(context) {
+                                        const dataPoint = context.raw;
+                                        return [
+                                            'Activity: ' + dataPoint.label,
+                                            'CO₂: ' + dataPoint.y + ' kg',
+                                            'Date: ' + dataPoint.date
+                                        ];
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 13,
+                                        weight: 'bold'
+                                    },
+                                    padding: 15,
+                                    usePointStyle: true
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching emissions data:', error);
+                chartCanvas.style.display = 'none';
+                document.getElementById('noDataMessage').style.display = 'block';
+            });
+    }
+});
