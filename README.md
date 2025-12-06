@@ -11,3 +11,4 @@ A key highlight of EcoTrack is its gamification component. To make sustainabilit
 The system is developed using HTML, CSS, and JavaScript for the frontend, a Flask-based Python backend, and MongoDB or Firebase for data storage. Chart.js powers the graphical representations, ensuring clean and interactive visual insights. This lightweight, scalable tech stack allows EcoTrack to expand from individual users to entire institutions with ease.
 
 Overall, EcoTrack aims to build environmental awareness, inspire behavioral change, and promote a community-driven approach to sustainability. By empowering students with knowledge and motivation, the platform contributes to long-term ecological responsibility and supports broader environmental goals.
+<img width="1201" height="638" alt="image" src="https://github.com/user-attachments/assets/4ec6c840-fcc8-40f8-ad64-ce650c38355f" />
