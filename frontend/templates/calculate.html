@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Calculate Emissions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">🌍 EcoTrack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('calculate') }}">Calculate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('badges') }}">Badges</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('sdg') }}">Learn SDGs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="text-success">Carbon Emission Calculator 🧮</h2>
+                <p class="text-muted">Calculate your carbon footprint from daily activities.</p>
+            </div>
+        </div>
+
+        {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>✅ Calculated!</strong> You emitted {{ emission }} kg of CO₂.
+            {% if newly_earned %}
+            <br><strong>🎉 New Badges Earned:</strong> {{ newly_earned|join(', ') }}
+            {% endif %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h4 class="card-title text-success mb-3">🚗 Vehicle Emission</h4>
+                        <form method="POST" action="{{ url_for('calculate') }}">
+                            <input type="hidden" name="category" value="vehicle">
+                            
+                            <div class="mb-3">
+                                <label for="vehicle_type" class="form-label">Vehicle Type</label>
+                                <select class="form-select" id="vehicle_type" name="vehicle_type" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Car">🚗 Car (0.17 kg/km)</option>
+                                    <option value="Bike">🏍️ Bike (0.08 kg/km)</option>
+                                    <option value="Bus">🚌 Bus (0.10 kg/km)</option>
+                                    <option value="Train">🚆 Train (0.04 kg/km)</option>
+                                    <option value="Bicycle">🚴 Bicycle (0 kg/km)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="distance" class="form-label">Distance (km)</label>
+                                <input type="number" class="form-control" id="distance" name="distance" 
+                                       min="0" step="0.1" placeholder="Enter distance" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success w-100">Calculate Vehicle Emission</button>
+                        </form>
+                        
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <strong>💡 Tip:</strong> Choose eco-friendly transport like trains, buses, or bicycles to reduce emissions and earn badges!
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h4 class="card-title text-success mb-3">🍽️ Food Emission</h4>
+                        <form method="POST" action="{{ url_for('calculate') }}">
+                            <input type="hidden" name="category" value="food">
+                            
+                            <div class="mb-3">
+                                <label for="diet_type" class="form-label">Diet Type</label>
+                                <select class="form-select" id="diet_type" name="diet_type" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Vegetarian">🥗 Vegetarian (1.7 kg/day)</option>
+                                    <option value="Non-Vegetarian">🍖 Non-Vegetarian (3.3 kg/day)</option>
+                                    <option value="Vegan">🌱 Vegan (1.5 kg/day)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="meals" class="form-label">Meals per Day</label>
+                                <input type="number" class="form-control" id="meals" name="meals" 
+                                       min="1" max="10" placeholder="Enter number of meals" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success w-100">Calculate Food Emission</button>
+                        </form>
+                        
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <strong>💡 Tip:</strong> Plant-based diets like vegetarian and vegan have significantly lower carbon footprints!
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="mb-3">📚 Emission Factors Reference</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Vehicle Emissions</h6>
+                                <ul class="small mb-0">
+                                    <li>Car: 0.192 kg CO₂/km</li>
+                                    <li>Bike: 0.082 kg CO₂/km</li>
+                                    <li>Bus: 0.105 kg CO₂/km</li>
+                                    <li>Train: 0.041 kg CO₂/km</li>
+                                    <li>Bicycle: 0 kg CO₂/km</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Food Emissions (per day)</h6>
+                                <ul class="small mb-0">
+                                    <li>Vegetarian: 1.7 kg CO₂/day</li>
+                                    <li>Non-Vegetarian: 3.3 kg CO₂/day</li>
+                                    <li>Vegan: 1.5 kg CO₂/day</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
