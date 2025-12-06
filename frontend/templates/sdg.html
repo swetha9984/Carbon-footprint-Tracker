@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - UN Sustainable Development Goals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">🌍 EcoTrack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('calculate') }}">Calculate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('badges') }}">Badges</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('sdg') }}">Learn SDGs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="text-success">UN Sustainable Development Goals 🌐</h2>
+                <p class="text-muted">Learn how your actions contribute to global sustainability goals.</p>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h5 class="mb-3">About the SDGs</h5>
+                        <p>The Sustainable Development Goals (SDGs), also known as the Global Goals, were adopted by the United Nations in 2015 as a universal call to action to end poverty, protect the planet, and ensure that by 2030 all people enjoy peace and prosperity.</p>
+                        <p class="mb-0">EcoTrack helps you contribute to four key SDGs related to climate action and sustainability:</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for sdg in sdgs %}
+            <div class="col-md-6 mb-4">
+                <div class="card sdg-card border-0 shadow-sm h-100" style="border-left: 5px solid {{ sdg.color }} !important;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="sdg-number me-3" style="background-color: {{ sdg.color }};">
+                                {{ sdg.number }}
+                            </div>
+                            <div>
+                                <h4 class="mb-0">{{ sdg.title }}</h4>
+                            </div>
+                        </div>
+                        <p class="text-muted">{{ sdg.description }}</p>
+                        
+                        <div class="mt-3 p-3 rounded" style="background-color: {{ sdg.color }}20;">
+                            <h6 style="color: {{ sdg.color }};">How EcoTrack Helps:</h6>
+                            <ul class="small mb-0">
+                                {% if sdg.number == 7 %}
+                                <li>Track emissions from fuel-based vs. clean transport</li>
+                                <li>Encourage use of electric or human-powered vehicles</li>
+                                <li>Promote awareness of energy consumption</li>
+                                {% elif sdg.number == 11 %}
+                                <li>Monitor daily commute carbon footprint</li>
+                                <li>Promote public transportation and cycling</li>
+                                <li>Help create greener urban mobility patterns</li>
+                                {% elif sdg.number == 12 %}
+                                <li>Track food consumption carbon impact</li>
+                                <li>Encourage sustainable dietary choices</li>
+                                <li>Raise awareness about production emissions</li>
+                                {% elif sdg.number == 13 %}
+                                <li>Measure and visualize personal carbon footprint</li>
+                                <li>Motivate emission reduction through gamification</li>
+                                <li>Educate about climate impact of daily choices</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 class="mb-3">🌱 Take Action Today!</h4>
+                        <p class="mb-3">Every small action counts. By tracking your carbon footprint and making eco-friendly choices, you're contributing to a sustainable future for our planet.</p>
+                        <a href="{{ url_for('calculate') }}" class="btn btn-light btn-lg">Start Calculating Your Impact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
